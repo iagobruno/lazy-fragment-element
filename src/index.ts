@@ -1,11 +1,4 @@
 export default class LazyFragmentElement extends HTMLElement {
-  get src(): string {
-    return this.getAttribute('src') || ''
-  }
-  set src(value: string) {
-    this.setAttribute('src', value)
-  }
-
   static get observedAttributes() {
     return [
       'src',
@@ -14,17 +7,18 @@ export default class LazyFragmentElement extends HTMLElement {
   }
 
   #mountedInTheDOM = false
-  #intersectionObserver: IntersectionObserver
   #loading = false
   #completed = false
-
-  constructor() {
-    super()
-    this.#intersectionObserver = new IntersectionObserver(this.#intersect, {
-      rootMargin: '0px 0px 256px 0px',
-      threshold: 0.01
-    })
-  }
+  #intersectionObserver = new IntersectionObserver((entries) => {
+    const entry = entries.slice(-1)[0]
+    if (entry?.isIntersecting) {
+      this.#loadFragment()
+      this.#intersectionObserver.disconnect()
+    }
+  }, {
+    rootMargin: '0px 0px 256px 0px',
+    threshold: 0.01,
+  })
 
   connectedCallback(): void {
     this.#mountedInTheDOM = true
@@ -90,14 +84,6 @@ export default class LazyFragmentElement extends HTMLElement {
     template.innerHTML = html
     const fragment = document.importNode(template.content, true)
     this.replaceWith(fragment)
-  }
-
-  #intersect: IntersectionObserverCallback = (entries) => {
-    const lastEntry = entries.slice(-1)[0]
-    if (lastEntry?.isIntersecting) {
-      this.#loadFragment()
-      this.#intersectionObserver.disconnect()
-    }
   }
 }
 
