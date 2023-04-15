@@ -6,7 +6,7 @@ export default class LazyFragmentElement extends HTMLElement {
     ]
   }
 
-  #mountedInTheDOM = false
+  #mountedInDOM = false
   #loading = false
   #completed = false
   #intersectionObserver = new IntersectionObserver((entries) => {
@@ -16,24 +16,23 @@ export default class LazyFragmentElement extends HTMLElement {
       this.#intersectionObserver.disconnect()
     }
   }, {
-    rootMargin: '0px 0px 256px 0px',
+    rootMargin: '0px 0px 100px 0px',
     threshold: 0.01,
   })
 
   connectedCallback(): void {
-    this.#mountedInTheDOM = true
+    this.#mountedInDOM = true
     if (!this.hasAttribute('disabled')){
       this.#intersectionObserver.observe(this)
     }
   }
 
   disconnectedCallback(): void {
-    this.#mountedInTheDOM = false
+    this.#mountedInDOM = false
     this.#intersectionObserver.disconnect()
   }
 
   attributeChangedCallback(attrName: string, oldValue: unknown, newValue: unknown): void {
-    if (!this.#mountedInTheDOM) return;
     if (attrName === 'src' && newValue !== oldValue) {
       this.#loadFragment()
     }
@@ -45,7 +44,7 @@ export default class LazyFragmentElement extends HTMLElement {
   async #loadFragment() {
     const src = this.getAttribute('src')
     const isDisabled = this.hasAttribute('disabled')
-    if (!src || isDisabled) return;
+    if (!src || isDisabled || !this.#mountedInDOM) return;
 
     if (this.#loading || this.#completed) return;
     this.#loading = true
@@ -58,6 +57,7 @@ export default class LazyFragmentElement extends HTMLElement {
       this.#replaceTag(content)
     }
     catch (error: unknown) {
+      this.setAttribute('error', '')
       throw error
     }
     finally {
@@ -71,18 +71,21 @@ export default class LazyFragmentElement extends HTMLElement {
     if (csrfToken) {
       headers['X-CSRF-TOKEN'] = csrfToken
     }
-    return await fetch(url, {
+    const response = await fetch(url, {
       headers
     })
-      .then(res => res.text())
+    if (!response.ok) {
+      throw new Error(`Failed to load resource of ${this.outerHTML}: The server responded with a status of ${response.status}`)
+    }
+    return await response.text()
   }
 
   #replaceTag(html: string): void {
-    if (!this.#mountedInTheDOM) return;
+    if (!this.#mountedInDOM) return;
 
     const template = document.createElement('template')
     template.innerHTML = html
-    const fragment = document.importNode(template.content, true)
+    const fragment = template.content.cloneNode(true)
     this.replaceWith(fragment)
   }
 }

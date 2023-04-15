@@ -37,7 +37,7 @@ import 'lazy-fragment-element'
 <lazy-fragment src="/lazy-part-from-server">Loading...</lazy-fragment>
 ```
 
-The tag will be replaced by the content returned by the server as soon it appears on the screen (scrolling or showing with the css property `display`).
+The element will be entirely replaced by the HTML fragment returned by the server as soon it appears on the screen (scrolling or showing with the css property `display` in a parent element).
 
 You can also defer the loading by using the `disabled` attribute and removing it later.
 
