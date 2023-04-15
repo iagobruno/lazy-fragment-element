@@ -1,0 +1,23 @@
+{
+  "name": "lazy-fragment-element",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "iagobruno/lazy-fragment-element",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite serve example",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0"
+  }
+}

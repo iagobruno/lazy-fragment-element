@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <h2>Exemplo 1:</h2>
+  <p>Essa tag deve carregar o conteúdo do servidor assim que ela aparece na página.</p>
+  <div class="border">
+    <lazy-fragment src="/lazy-part.html">Loading...</lazy-fragment>
+  </div>
+
+  <h2>Exemplo 2:</h2>
+  <p>Tags aninhadas deve funcionar corretamente.</p>
+  <div class="border">
+    <lazy-fragment src="/nested-lazy-part.html">Loading 1...</lazy-fragment>
+  </div>
+
+  <h2>Exemplo 3:</h2>
+  <p>Essa tag está desativada (disabled) e deve carregar assim que o attributo disabled for removido.</p>
+  <div class="border">
+    <lazy-fragment src="/lazy-part.html" disabled id="disabled-tag"></lazy-fragment>
+  </div>
+  <button id="enable-tag">Ativar Tag</button>
+
+  <h2>Exemplo 4:</h2>
+  <p>A tag deve carregar assim que ela for adicionada programaticamente.</p>
+  <div class="border" id="append-tag">
+  </div>
+  <button id="add-tag">Adicionar Tag</button>
+
+  <h2>Exemplo 5:</h2>
+  <p>Essa tag está oculta (display: none) e deve carregar assim que for mostrada manualmente.</p>
+  <div class="border">
+    <div style="display: none" id="hidden-tag">
+      <lazy-fragment src="/lazy-part.html">Loading...</lazy-fragment>
+    </div>
+  </div>
+  <button id="show-tag">Mostrar Tag</button>
+
+  <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+  <h2>Exemplo 6:</h2>
+  <p>Essa tag deve carregar somente quando ela aparecer no viewport.</p>
+  <div class="border">
+    <lazy-fragment src="/lazy-part.html">Loading...</lazy-fragment>
+  </div>
+
+  <script type="module" src="./index.ts"></script>
+</body>
+
+</html>

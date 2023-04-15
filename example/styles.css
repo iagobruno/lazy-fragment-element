@@ -1,0 +1,12 @@
+h2 {
+  margin-bottom: 2px;
+}
+
+p {
+  margin-top: 0;
+}
+
+.border {
+  border: 1px solid black;
+  padding: 4px;
+}
