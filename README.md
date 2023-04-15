@@ -37,6 +37,10 @@ import 'lazy-fragment-element'
 <lazy-fragment src="/lazy-part-from-server">Loading...</lazy-fragment>
 ```
 
+The tag will be replaced by the content returned by the server as soon it appears on the screen (scrolling or showing with the css property `display`).
+
+You can also defer the loading by using the `disabled` attribute and removing it later.
+
 ## Browser support
 
 Browsers without native [custom element support](https://caniuse.com/#feat=custom-elementsv1) require a [polyfill](https://github.com/webcomponents/custom-elements).

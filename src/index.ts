@@ -33,21 +33,21 @@ export default class LazyFragmentElement extends HTMLElement {
   }
 
   attributeChangedCallback(attrName: string, oldValue: unknown, newValue: unknown): void {
-    if (!this.#mountedInTheDOM) return
+    if (!this.#mountedInTheDOM) return;
     if (attrName === 'src' && newValue !== oldValue) {
       this.#loadFragment()
     }
     else if (attrName === 'disabled' && newValue === null) {
-      this.#intersectionObserver.observe(this)
+      this.#loadFragment()
     }
   }
 
   async #loadFragment() {
     const src = this.getAttribute('src')
     const isDisabled = this.hasAttribute('disabled')
-    if (!this.hasAttribute('src') || !src || isDisabled) return;
+    if (!src || isDisabled) return;
 
-    if (this.#loading || this.#completed) return
+    if (this.#loading || this.#completed) return;
     this.#loading = true
     this.#completed = false
 
@@ -55,10 +55,10 @@ export default class LazyFragmentElement extends HTMLElement {
       const content = await this.#fetchHTML(src)
 
       this.#completed = true
-      this.#replaceHTML(content)
+      this.#replaceTag(content)
     }
-    catch (error) {
-
+    catch (error: unknown) {
+      throw error
     }
     finally {
       this.#loading = false
@@ -77,7 +77,7 @@ export default class LazyFragmentElement extends HTMLElement {
       .then(res => res.text())
   }
 
-  #replaceHTML(html: string): void {
+  #replaceTag(html: string): void {
     if (!this.#mountedInTheDOM) return;
 
     const template = document.createElement('template')
