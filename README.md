@@ -2,6 +2,9 @@
 
 Lazily load parts of a webpage as soon as they appear in the screen.
 
+[![npm](https://img.shields.io/npm/v/lazy-fragment-element)](https://www.npmjs.com/package/lazy-fragment-element)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/lazy-fragment-element)
+
 ## Installation
 
 ### CDN
