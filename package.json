@@ -1,6 +1,6 @@
 {
   "name": "lazy-fragment-element",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "repository": "iagobruno/lazy-fragment-element",
   "main": "dist/index.js",
